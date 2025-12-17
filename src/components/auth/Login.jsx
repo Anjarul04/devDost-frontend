@@ -1,18 +1,22 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import { UserContext } from "../../context/UserContext";
 
-const Login = ({ setIsLogin }) => {
+const Login = () => {
+  const {isLoggedIn,isSignUp,login,logout,signUp,signOut} = useContext(UserContext);
+  const handleClose = ()=>{
+    logout();
+    signOut();
+  }
   return (
     <div
-      onClick={() => setIsLogin(false)}
+      onClick={() => logout}
       className="
         fixed inset-0 z-50
         bg-black/40 backdrop-blur-md
-        flex items-center justify-center
-      "
-    >
+        flex items-center justify-center">
       <form
         onClick={(e) => e.stopPropagation()}
-        onSubmit={(e)=>e.preventDefault()}
+        onSubmit={(e) => e.preventDefault()}
         className="
           relative
           w-[420px]
@@ -24,21 +28,22 @@ const Login = ({ setIsLogin }) => {
           flex flex-col gap-6
         "
       >
-      
         <button
           type="button"
-          onClick={() => setIsLogin(false)}
+          onClick={handleClose}
           className="
             absolute top-3 right-3
             w-8 h-8
             flex items-center justify-center
-            rounded-xl
+            rounded
             hover:bg-black/10
             text-xl font-bold
             cursor-pointer
           "
-        > 🗙
-        </button>   
+        >
+          {" "}
+          🗙
+        </button>
 
         <div className="flex justify-center">
           <img
@@ -49,9 +54,19 @@ const Login = ({ setIsLogin }) => {
         </div>
 
         <div className="flex flex-col gap-6">
+          {isSignUp && <><input
+            type="text"
+            placeholder="Frist Name"
+            className="w-full px-4 py-2 rounded-2xl border border-black/40 outline-none"
+          />
+          <input
+            type="text"
+            placeholder="Last Name"
+            className="w-full px-4 py-2 rounded-2xl border border-black/40 outline-none"
+          /></>}
           <input
             type="email"
-            placeholder="username, or email"
+            placeholder={isLoggedIn !== isSignUp?"username, or email":"Email"}
             className="w-full px-4 py-2 rounded-2xl border border-black/40 outline-none"
           />
           <input
@@ -59,30 +74,35 @@ const Login = ({ setIsLogin }) => {
             placeholder="Password"
             className="w-full px-4 py-2 rounded-2xl border border-black/40 outline-none"
           />
+          {isSignUp && <input
+            type="password"
+            placeholder="Confirm Password"
+            className="w-full px-4 py-2 rounded-2xl border border-black/40 outline-none"
+          />}
         </div>
-
 
         <button
           className="
             self-center
-            mt-2 py-2 w-32 rounded-xl
+            mt-2 py-2 px-6 rounded-xl
             font-bold text-xl
             bg-gradient-to-r from-gray-500
             hover:bg-black hover:text-white
             cursor-pointer
+            border 
           "
         >
-          Log in
+          {isLoggedIn != isSignUp?"Log in":"create an account"}
         </button>
 
-        <div className="flex justify-between text-sm text-black/70 mt-2">
+        {isLoggedIn && !isSignUp && <div className="flex justify-between text-sm text-black/70 mt-2">
           <button type="button" className="hover:underline cursor-pointer">
             Forgot password?
           </button>
-          <button type="button" className="hover:underline cursor-pointer">
-            Already have an account
+          <button onClick={()=>signUp()} type="button" className="hover:underline cursor-pointer">
+            Have'nt account
           </button>
-        </div>
+        </div>}{isLoggedIn && isSignUp && <button onClick={()=>signOut()} type="button" className="hover:underline cursor-pointer">Already have an account</button>}
       </form>
     </div>
   );

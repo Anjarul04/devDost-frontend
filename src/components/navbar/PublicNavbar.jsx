@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router";
 import Login from "../auth/Login";
+import { UserContext } from "../../context/UserContext";
 
 const PublicNavbar = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const {isLoggedIn,login} = useContext(UserContext);
   return (
     <div className="w-full h-24 border-b-2 border-b-gray-400/70">
       
@@ -24,14 +25,14 @@ const PublicNavbar = () => {
           <li>Support</li>
           <li>Download</li>
         </ul>
-
-        <button onClick={()=>setIsLogin(true)} className="px-10 py-2 border rounded-lg text-xl cursor-pointer font-bold  bg-gradient-to-r from-gray-300  hover:bg-black hover:text-white">
+        
+        <button onClick={()=>login()} className="px-10 py-2 border rounded-lg text-xl cursor-pointer font-bold  bg-gradient-to-r from-gray-300  hover:bg-black hover:text-white">
           Log in
         </button>
         
 
       </div>
-      {isLogin && <Login setIsLogin={setIsLogin}/>}
+      {isLoggedIn && <Login/>}
     </div>
   );
 };

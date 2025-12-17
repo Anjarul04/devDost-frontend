@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 
 const Hero = () => {
+  const {isLoggedIn,isSignUp,login,logout,signUp,signOut} = useContext(UserContext);
+  const handleOnClick = ()=>{
+    login();
+    signUp();
+  }
   return (
     <div className="relative flex justify-center mt-10 ">
       <div className="absolute left-0 ">
         <img className="h-[300px]" src="/src/assets/images/hero/blur-bg-1.png" />
         <img className="h-[300px]" src="/src/assets/images/hero/blur-bg-2.png" />
       </div>
-    
       <div className="w-9/12 flex items-center justify-center">
         <div className="w-1/2 flex flex-col gap-6">
           <h1 className="text-6xl font-bold leading-tight">
@@ -20,7 +25,7 @@ const Hero = () => {
             amazing projects.
           </p>
 
-          <button className="w-50 py-2 border rounded-lg text-xl cursor-pointer font-bold  bg-gradient-to-r from-gray-300  hover:bg-black hover:text-white">
+          <button onClick={handleOnClick} className="w-50 py-2 border rounded-lg text-xl cursor-pointer font-bold  bg-gradient-to-r from-gray-300  hover:bg-black hover:text-white">
             Create Account
           </button>
         </div>
